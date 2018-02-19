@@ -8,6 +8,12 @@ def print_help():
 inp1 = reference BED file
 inp2 = target BED file
 inp3 = (optional) string for output
+
+Output: 7-column file
+First 4 columns are the 4 columns of the input BED reference file
+Last 3 columns are the 3 columns with the start/end and 4th column of the target BED file
+Regions in the regerence BED file that do not have an overlap in the target BED file
+  will have three NAs appended.
 '''
 
 def main():
