@@ -16,9 +16,9 @@ def get_files(dir,probe="",headtail=""):
 			if f.endswith(probe):
 				l.append(dir+"/"+f)
 		else:
-			print "headtail argument not understood, headtail =",\
-headtail
-			print "\tvalid arguments: head, tail"
+			print("headtail argument not understood, headtail =",\
+headtail)
+			print("\tvalid arguments: head, tail")
 	return l
 
 def convert_probe(probe_str):
@@ -111,7 +111,7 @@ def file2dict_2col(inp_file,split_char="\t",key_ind=0,val_ind=1):
 			if key not in dict:
 				dict[key] = val
 			else:
-				print "WARNING: Multiple identical IDs encountered:",key,"| Most recent value kept" 
+				print("WARNING: Multiple identical IDs encountered:",key,"| Most recent value kept") 
 				dict[key] = val
 	inp.close()
 	return dict
@@ -174,8 +174,8 @@ def make_float_list(list,ignore_list=[],ignore_replace=""):
 				float_list.append(item)
 		return float_list
 	except:
-		print "This item will not float:",last_item
-		print "Aborted!"
+		print("This item will not float:",last_item)
+		print("Aborted!")
 		sys.exit()
 
 def make_string_list(list):
@@ -190,7 +190,7 @@ def make_int_list(list):
 		try:
 			int_list.append(int(item))
 		except:
-			print "Item can not be integer:",item
+			print("Item can not be integer:",item)
 			sys.exit()
 	return int_list
 ###
@@ -244,24 +244,24 @@ def calc_percent_coverage(coords0_l,c0s_ind,c0e_ind,coords1_l,c1s_ind,c1e_ind): 
 		coverage_end = c1_end
 		# print "back of region1 overlaps with front of region0"
 	else:
-		print "Anything else??"
-		print coords0_l
-		print coords1_l
+		print("Anything else??")
+		print(coords0_l)
+		print(coords1_l)
 	
 	coverage_length = coverage_end-coverage_start+1
 	percent_of_total = round(float(coverage_length)/float(c0_tot_len)*100,2)
 	
 	# Check for abnormalities
 	if percent_of_total > 100.0:
-		print "COVERAGE OVER 100%"
-		print reg_ln_l
-		print feat_ln_l
-		print percent_of_total
+		print("COVERAGE OVER 100%")
+		print(reg_ln_l)
+		print(feat_ln_l)
+		print(percent_of_total)
 	elif percent_of_total <= 0:
-		print "NEGATIVE COVERAGE"
-		print "\t".join(reg_ln_l)
-		print "\t".join(feat_ln_l)
-		print percent_of_total
+		print("NEGATIVE COVERAGE")
+		print("\t".join(reg_ln_l))
+		print("\t".join(feat_ln_l))
+		print(percent_of_total)
 	# print "Cov length:",coverage_length
 	# print "% coverage:",percent_of_total
 	# print
@@ -401,7 +401,7 @@ def subsample_sam(sam,sample_count): #also returns subsampled sam file name
 	subsamp_sam_nm = "%s.%s.random"%(sam,sample_count)
 	out = open(subsamp_sam_nm,"w")
 	read_cnt = ind_e-ind_s
-	print read_cnt,ind_e,ind_s 
+	print(read_cnt,ind_e,ind_s) 
 	import random
 	if samps > read_cnt:
 		for line in inp:
@@ -410,7 +410,7 @@ def subsample_sam(sam,sample_count): #also returns subsampled sam file name
 		for item in hdr_l:
 			out.write(item)
 		
-		ind_list = range(ind_s,ind_e)
+		ind_list = list(range(ind_s,ind_e))
 		subsamp = random.sample(ind_list,samps)
 		subsamp.sort()
 		
@@ -427,10 +427,10 @@ def sam2txfrag(sam,min_intron,max_intron,fasta_genome,frag_mean_len): # Module r
 	import os
 	try:
 		cmd = "cufflinks -o %s.txfrag --min-intron-length %s --max-intron-length %s --frag-bias-correct %s --frag-len-mean %s %s"%(sam,min_intron,max_intron,fasta_genome,frag_mean_len,sam)
-		print cmd
+		print(cmd)
 		os.system(cmd)
 	except:
-		print "Command failed, is the TopHat2 module loaded?"
+		print("Command failed, is the TopHat2 module loaded?")
 ###
 ### MATH FUNCTIONS - require floated values
 
@@ -586,7 +586,7 @@ def factorial(integer):
 	if integer == 0:
 		factorial = 1
 	else:
-		vals = range(1,integer+1)
+		vals = list(range(1,integer+1))
 		factorial = 1
 		for val in vals:
 			factorial = factorial*val

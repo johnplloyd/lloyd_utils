@@ -44,7 +44,7 @@ def FilterList(in_list,indexes,keep=True):
         out_list = [in_list[i] for i in range(len(in_list)) if i not in indexes]
         return out_list
     else:
-        print("Warning: Unrecogized value " + str(keep) + " for flag keep. Returning the original list")
+        print "Warning: Unrecogized value " + str(keep) + " for flag keep. Returning the original list"
         return in_list
 
 ## 1. Indexed Overlapping Functions ##
@@ -76,7 +76,7 @@ def FindSeqMax(lines,seq_idx,stop_idx,seq_max_dict,sep="\t"):
     for s in Seqs:
         current_max = max([v[1] for v in SeqCoords if v[0] == s])
         # If the sequence is not new, check if update is needed
-        if s in list(seq_max_dict.keys()):
+        if s in seq_max_dict.keys():
             previous_max = seq_max_dict[s]
             if current_max > previous_max:
                 seq_max_dict[s] = current_max
@@ -103,7 +103,7 @@ def IndexSequences(seq_max_dict,span):
     seq_index_dict = {}
 
     # For each sequence
-    for seq in list(seq_max_dict.keys()):
+    for seq in seq_max_dict.keys():
         seq_index_dict[seq] = {}
         max = seq_max_dict[seq]
         max_index = math.floor(max/span) # Will return the divisor, rounded down to nearest int
@@ -188,7 +188,7 @@ def AddToIndex(file_vars,seq_index_dict,span,sep="\t"):
             try:
                 seq_index_dict[seq][idx].add((start,stop,remainder))
             except KeyError:
-                print("Warning: Index " + idx + " for feature at " + seq + ": " + start + " - " + stop + " is not in the indexed sequence dictionary")
+                print "Warning: Index " + idx + " for feature at " + seq + ": " + start + " - " + stop + " is not in the indexed sequence dictionary"
 
 def TestOverlap(start1,stop1,start2,stop2):
     ''' Test if two features overlap based on their position
@@ -305,7 +305,7 @@ def FindOverlapsByIndexing(ref,target,span,sep="\t"):
             try:
                 comparison_features.extend(list(seq_index_dict[seq][index]))
             except KeyError:
-                print("Warning: Index " + index + " for feature at " + seq + ": " + start + " - " + stop + " is not in the indexed sequence dictionary")
+                print "Warning: Index " + index + " for feature at " + seq + ": " + start + " - " + stop + " is not in the indexed sequence dictionary"
                   
         comparison_features = list(set(comparison_features)) # De-dup the comparison list
 
@@ -401,7 +401,7 @@ def AddtoSeq(file_vars,seq_dict,sep="\t"):
     posit_idx = int(posit_idx)
     
     # For each sequence in the sequence dictionary
-    for seq in list(seq_dict.keys()):
+    for seq in seq_dict.keys():
         # Get indexes for the current seq
         
         # Get features on the current seq
@@ -552,20 +552,20 @@ def ReadCtlFileForOverlap(file):
         ref_values = ref_values.split(",")
         argument_dict["Ref"] = ref_values
     except Exception as e:
-        print("Error: Comma seperated list of values is required for the Ref argument")
+        print "Error: Comma seperated list of values is required for the Ref argument"
         raise e
     try:
         tar_values = argument_dict["Tar"]
         tar_values = tar_values.split(",")
         argument_dict["Tar"] = tar_values
     except Exception as e:
-        print("Error: Comma seperated list of values is required for the Target argument")
+        print "Error: Comma seperated list of values is required for the Target argument"
         raise e
     try:
         span = argument_dict["Span"]
         argument_dict["Span"] = int(span)
     except Exception as e:
-        print("Error: An interger value is require for the Span argument")
+        print "Error: An interger value is require for the Span argument"
         raise e        
 
     return argument_dict

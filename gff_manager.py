@@ -1,6 +1,6 @@
 
 def print_help():
-	print'''
+	print('''
 Input file, -i
 
 Functions, -f:
@@ -93,7 +93,7 @@ Additional flags:
   -source	string source input
   -type		string type input
   -out_sffx	output file suffix
-'''
+''')
 
 def set_defaults_and_parse_args(argv_l):
 	function = input_file = char_str = gff2 = src = typ = intgr = o_str = None
@@ -120,7 +120,7 @@ def set_defaults_and_parse_args(argv_l):
 		return input_file,function,char_str,gff2,cm_chr,src,typ,intgr,o_str
 	except:
 		print_help()
-		print "Error reading arguments!"
+		print("Error reading arguments!")
 		sys.exit()
 
 def gff2dict(gff_fl,cmm="#",strng=None):
@@ -192,7 +192,7 @@ def rounddown(x,by):
 
 def indices_between_values(low,high,span):
 	ind_l = []
-	min_vals = range(low,high,span)
+	min_vals = list(range(low,high,span))
 	for min_val in min_vals:
 		start_ind = min_val
 		end_ind = start_ind+span-1
@@ -252,8 +252,8 @@ def add_gff_to_index(g,ind_d,span):
 
 def same_keys_list(g1,g2):
 	l = []
-	for key in g1.keys():
-		if key in g2.keys():
+	for key in list(g1.keys()):
+		if key in list(g2.keys()):
 			l.append(key)
 	return l
 
@@ -319,9 +319,9 @@ def overlap_dict_by_indexing(gf1,gf2,span):
 					for comp_line in seq_index_d[seq][index]:
 						comparison_lines_set.add(comp_line)
 				except:
-					print lineLst
-					print seq,index
-					print all_indices
+					print(lineLst)
+					print(seq,index)
+					print(all_indices)
 			
 			for comp_line in comparison_lines_set:
 				start2 = comp_line[3]
@@ -368,13 +368,13 @@ def adjust_gff_limits(gff1_lineLst,gff2_lineLst):
 		new_lineLst = new_coords(gff1_lineLst,e2+1,e1)
 		return ["",new_lineLst]
 	else:
-		print "WHAT ELSE IS THERE?",gff1_lineLst,gff2_lineLst
+		print("WHAT ELSE IS THERE?",gff1_lineLst,gff2_lineLst)
 
 def region_of_overlap(gff1_line,gff2_line):
 	seq0 = gff1_line[0]
 	seq1 = gff2_line[0]
 	if seq0 != seq1:
-		print "Sequences are not identical!:",seq0,seq1
+		print("Sequences are not identical!:",seq0,seq1)
 	
 	start0 = int(gff1_line[3])
 	end0 = int(gff1_line[4])
@@ -399,14 +399,14 @@ def region_of_overlap(gff1_line,gff2_line):
 		region_start = start0
 		region_end = end1
 	else:
-		print "What's left?"
-		print gff1_line
-		print gff2_line
+		print("What's left?")
+		print(gff1_line)
+		print(gff2_line)
 	region_length = region_end-region_start+1
 	percent_of_total = float(region_length)/float(total_length)*100
 	# oof.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\n"%(frag_nm,region_start,region_end,feature,region_length,total_length,percent_of_total))
 	out_str = "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s"%(frag_nm,type,region_start,region_end,feature,region_length,total_length,percent_of_total)
-	print out_str
+	print(out_str)
 
 def function_sortGFF(fl,cmmnt,input_str):
 	out = open(fl+".sort","w")
@@ -532,7 +532,7 @@ def function_length(gff):
 		end = int(lineLst[4])
 		line_len = end-start+1
 		if line_len < 0:
-			print "NEGATIVE LENGTH:",line.strip()
+			print("NEGATIVE LENGTH:",line.strip())
 		else:
 			ln += line_len
 			if feat not in d_ln:
@@ -543,13 +543,13 @@ def function_length(gff):
 	
 	fl_nm = gff.split("/")[-1]
 	run_ln = 0
-	print "#file\tfeature\tlen\t%ofTot"
+	print("#file\tfeature\tlen\t%ofTot")
 	for feat in d_ln:
 		ft_len = d_ln[feat]
 		percn = round(float(ft_len)/float(ln)*100,2)
-		print "%s\t%s\t%s\t%s"%(fl_nm,feat,ft_len,percn)
+		print("%s\t%s\t%s\t%s"%(fl_nm,feat,ft_len,percn))
 		run_ln += ft_len
-	print "%s\ttotal\t%s\t%s"%(fl_nm,ln,run_ln)
+	print("%s\ttotal\t%s\t%s"%(fl_nm,ln,run_ln))
 
 def function_prefixID(gff,str):
 	inp = open(gff)
@@ -557,7 +557,7 @@ def function_prefixID(gff,str):
 		lineLst = line.strip().split("\t")
 		rpl_desc = lineLst[-1].replace("ID=","ID="+str)
 		lineLst[-1] = rpl_desc
-		print "\t".join(lineLst)
+		print("\t".join(lineLst))
 
 def function_maskGFF(gff,gff2,feat_type,out_str):
 	if out_str == None:
@@ -637,7 +637,7 @@ def function_overlap(gff,gff2,out_str,feat_type):
 def function_overlapPlus(gff,gff2):
 	index_span = 10000
 	overlap_d = overlap_dict_by_indexing(gff,gff2,index_span)
-	print "#id\tregion_type\tovrlp_start\tovrlp_end\tovrlp_feat\tovrlp_len\ttotal_len\tper_of_total"
+	print("#id\tregion_type\tovrlp_start\tovrlp_end\tovrlp_feat\tovrlp_len\ttotal_len\tper_of_total")
 	inp = open(gff)
 	for line in inp:
 		lineLst = line.strip().split("\t")
@@ -662,13 +662,13 @@ def function_compareLens(gff,gff2,feat_type):
 	m2,n2,a2 = calc_med_len_ave(gff2_len_l)
 	pVal = stats.mannwhitneyu(gff1_len_l,gff2_len_l)[1]
 	
-	print
-	print "stat\tgff1\tgff2"
-	print "med\t%s\t%s"%(m1,m2)
-	print "n\t%s\t%s"%(n1,n2)
-	print "ave\t%s\t%s"%(a1,a2)
-	print
-	print "MWU p-value:",pVal
+	print()
+	print("stat\tgff1\tgff2")
+	print("med\t%s\t%s"%(m1,m2))
+	print("n\t%s\t%s"%(n1,n2))
+	print("ave\t%s\t%s"%(a1,a2))
+	print()
+	print("MWU p-value:",pVal)
 
 def function_coords2gff(coords,source,type):
 	if source == None:
@@ -753,9 +753,9 @@ def function_lenPercentiles(gff,intgr,com):
 	inp.close()
 	
 	if intgr != None:
-		print "feat\tmed\t75per\t95per\t99per\t%sper\tmax"%(intgr)
+		print("feat\tmed\t75per\t95per\t99per\t%sper\tmax"%(intgr))
 	else:
-		print "feat\tmed\t75per\t95per\t99per\tmax"
+		print("feat\tmed\t75per\t95per\t99per\tmax")
 	import numpy
 	for key in ft_lens_d:
 		lens_l = ft_lens_d[key]
@@ -769,9 +769,9 @@ def function_lenPercentiles(gff,intgr,com):
 		max_val = max(fl_l)
 		if intgr != None:
 			perX = numpy.percentile(fl_l,intgr)
-			print "%s\t%s\t%s\t%s\t%s\t%s\t%s"%(key,med,per75,per95,per99,perX,max_val)
+			print("%s\t%s\t%s\t%s\t%s\t%s\t%s"%(key,med,per75,per95,per99,perX,max_val))
 		else:
-			print "%s\t%s\t%s\t%s\t%s\t%s"%(key,med,per75,per95,per99,max_val)
+			print("%s\t%s\t%s\t%s\t%s\t%s"%(key,med,per75,per95,per99,max_val))
 			
 	# inp = open(gff)
 	# ft_d = {}
@@ -812,7 +812,7 @@ def function_mergeDepth(gff,com):
 	out.close()
 	inp.close()
 	
-	print "Maximum merge depth:",max_depth
+	print("Maximum merge depth:",max_depth)
 
 def function_locID(gff,com):
 	inp = open(gff)
@@ -869,7 +869,7 @@ def function_orientation(gff):
 			start = int(lineLst[3])
 			end = int(lineLst[4])
 			if start > end:
-				print line.strip()
+				print(line.strip())
 	inp.close()
 
 def function_rm_iden_crd(gff):
@@ -911,51 +911,51 @@ def main():
 	
 	if func == None or infile == None:
 		print_help()
-		print "Function (-f) and input file (-i) required!"
+		print("Function (-f) and input file (-i) required!")
 		sys.exit()
 	elif func == "sort":
 		function_sortGFF(infile,com_char,chr_str)
 	elif func == "merge":
 		function_mergeGFF(infile)
 	elif func == "sort_merge":
-		print "Sorting GFF file"
+		print("Sorting GFF file")
 		function_sortGFF(infile,com_char,chr_str)
-		print "Merging GFF file"
+		print("Merging GFF file")
 		function_mergeGFF(infile+".sort")
-		print "Done!"
+		print("Done!")
 	elif func == "length":
 		function_length(infile)
 	elif func == "prefix_id":
 		if chr_str == None:
 			print_help()
-			print "Character string (-str) required to run add_prefix_to_id function"
+			print("Character string (-str) required to run add_prefix_to_id function")
 		else:
 			function_prefixID(infile,chr_str)
 	elif func == "mask":
 		if gff2_file == None:
 			print_help()
-			print "Secondary gff file (-gff2) required to run mask function"
+			print("Secondary gff file (-gff2) required to run mask function")
 			sys.exit()
 		else:
 			function_maskGFF(infile,gff2_file,inp_typ,chr_str)
 	elif func == "overlap":
 		if gff2_file == None:
 			print_help()
-			print "Secondary gff file (-gff2) required to run overlap function"
+			print("Secondary gff file (-gff2) required to run overlap function")
 			sys.exit()
 		else:
 			function_overlap(infile,gff2_file,chr_str,inp_typ)
 	elif func == "overlap+":
 		if gff2_file == None:
 			print_help()
-			print "Secondary gff file (-gff2) required to run overlap+ function"
+			print("Secondary gff file (-gff2) required to run overlap+ function")
 			sys.exit()
 		else:
 			function_overlapPlus(infile,gff2_file)
 	elif func == "compare_lens":
 		if gff2_file == None:
 			print_help()
-			print "Secondary gff file (-gff2) required to run compare_lens function"
+			print("Secondary gff file (-gff2) required to run compare_lens function")
 			sys.exit()
 		else:
 			function_compareLens(infile,gff2_file,chr_str)
@@ -968,7 +968,7 @@ def main():
 	elif func == "min_len":
 		if inp_int == None:
 			print_help()
-			print "Minimum length (-int) required to run min_len function"
+			print("Minimum length (-int) required to run min_len function")
 			sys.exit()
 		else:
 			function_minLen(infile,inp_int,inp_typ,com_char)
@@ -988,7 +988,7 @@ def main():
 		function_rm_iden_crd(infile)
 	else:
 		print_help()
-		print "Unrecognized function:",func
+		print("Unrecognized function:",func)
 
 if __name__ == "__main__":
 	main()

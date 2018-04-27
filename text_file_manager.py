@@ -1,7 +1,7 @@
 import os,sys
 
 def print_help():
-	print'''
+	print('''
 Input file, -i
 
 Functions, -f:
@@ -81,7 +81,7 @@ Other flags:
 	-rid	Rows have an identifier in the first column
 	-sep	Column separator character (default = tab, \"space\" is valid)
 	-list	Input to turn into a list
-'''
+''')
 
 def convert_sep(separator):
 	if separator == "space":
@@ -99,7 +99,7 @@ def float_list(list):
 			float_item = float(item)
 		except:
 			if express_error == True:
-				print "List contains values that will not float! Ignoring..."
+				print("List contains values that will not float! Ignoring...")
 				express_error = False
 		if float_item != None:
 			float_list.append(float_item)
@@ -122,7 +122,7 @@ def inp2list(input_file):
 	try:
 		inp = open(input_file)
 	except:
-		print "Cannot open -list input!"
+		print("Cannot open -list input!")
 		sys.exit()
 	for line in inp:
 		item = line.strip()
@@ -137,7 +137,7 @@ def set_string_status(item):
 	elif isinstance(item,str):
 		set_or_string = "str"
 	else:
-		print "Remove/keep item is neither a list nor a string!"
+		print("Remove/keep item is neither a list nor a string!")
 		sys.exit()
 	return set_or_string
 
@@ -146,7 +146,7 @@ def process_rm_item(rm_item,item_to_check,out_line):
 	set_or_string = set_string_status(rm_item)
 	if set_or_string == "str":
 		if rm_item not in item_to_check:
-			print out_line.strip()
+			print(out_line.strip())
 			# outfile.write(out_line)
 	elif set_or_string == "set":
 		proceed = True
@@ -155,7 +155,7 @@ def process_rm_item(rm_item,item_to_check,out_line):
 				proceed = False
 				break
 		if proceed == True:
-			print out_line.strip()
+			print(out_line.strip())
 			# outfile.write(out_line)
 
 # def process_keep_item(keep_item,item_to_check,outfile,out_line):
@@ -163,11 +163,11 @@ def process_keep_item(keep_item,item_to_check,out_line):
 	set_or_string = set_string_status(keep_item)
 	if set_or_string == "str":
 		if keep_item in item_to_check:
-			print out_line
+			print(out_line)
 	elif set_or_string == "set":
 		for keep in keep_item:
 			if keep in item_to_check:
-				print out_line
+				print(out_line)
 				# outfile.write(out_line)
 				break
 
@@ -184,7 +184,7 @@ def function_random(input_file,comment_char,n):
 			list.append(line)
 	
 	if len(list) < n:
-		print "  WARNING: File length shorter than n, keeping all lines"
+		print("  WARNING: File length shorter than n, keeping all lines")
 		random_list = list[:]
 	else:
 		random_list = random.sample(list,n)
@@ -224,7 +224,7 @@ def function_keep_line(input_file,comment_char,keep_item,n,col_sep):
 	for line in inp:
 		line = line.strip()
 		if line.startswith(comment_char):
-			print line
+			print(line)
 			# out.write(line)
 		# elif char_str in line:
 		else:	
@@ -248,7 +248,7 @@ def function_rm_line(input_file,comment_char,rm_item,n,col_sep):
 	
 	for line in inp:
 		if line.startswith(comment_char):
-			print line.strip()
+			print(line.strip())
 			# out.write(line)
 		else:
 			if n == None:
@@ -329,16 +329,16 @@ def function_rm_dup(input_file,comment_char):
 	st = set()
 	for line in inp:
 		if line.startswith(comment_char):
-			print line.strip()
+			print(line.strip())
 		else:
 			st.add(line)
 	inp.close()
 	
 	if st != set():
 		for line in st:
-			print line.strip()
+			print(line.strip())
 	else:
-		print "No duplicates present!"
+		print("No duplicates present!")
 
 def function_split_line(input_file,index,col_sep,char_str,comment_char):
 	inp = open(input_file)
@@ -393,16 +393,16 @@ def function_rmChar(input_file,rmChar,index,col_sep,comment_char):
 	for line in inp:
 		if line.startswith(comment_char):
 			# out.write(line)
-			print(line.strip())
+			print((line.strip()))
 		else:
 			if index == None:
 				# out.write(line.lower())
-				print line.strip().replace(rmChar,"")
+				print(line.strip().replace(rmChar,""))
 			else:
 				lineLst = line.strip().split(col_sep)
 				lineLst[index] = lineLst[index].replace(rmChar,"")
 				# out.write(col_sep.join(lineLst)+"\n")
-				print col_sep.join(lineLst)
+				print(col_sep.join(lineLst))
 	inp.close()
 	# out.close()
 
@@ -417,7 +417,7 @@ def function_colEle(input_file,index,col_sep,comment_char):
 			col_set.add(lineLst[index])
 	inp.close()
 	for item in col_set:
-		print item
+		print(item)
 
 def function_cntEle(input_file,n,col_sep,comment_char):
 	inp = open(input_file)
@@ -435,36 +435,36 @@ def function_cntEle(input_file,n,col_sep,comment_char):
 	inp.close()
 	for ele in ele_dict:
 		cnt = str(ele_dict[ele])
-		print "%s\t%s"%(ele,cnt)
+		print("%s\t%s"%(ele,cnt))
 
 def function_prefix(input_file,n,char_str,col_sep,comment_char):
 	inp = open(input_file)
 	for line in inp:
 		if line.startswith(comment_char):
-			print line.strip()
+			print(line.strip())
 		else:
 			if n == None:
-				print char_str+line.strip()
+				print(char_str+line.strip())
 			else:
 				lineLst = line.strip().split(col_sep)
 				out_item = char_str+lineLst[n].strip()
 				lineLst[n] = out_item
-				print col_sep.join(lineLst)
+				print(col_sep.join(lineLst))
 	inp.close()
 
 def function_suffix(input_file,n,char_str,col_sep,comment_char):
 	inp = open(input_file)
 	for line in inp:
 		if line.startswith(comment_char):
-			print line.strip()
+			print(line.strip())
 		else:
 			if n == None:
-				print line.strip()+char_str
+				print(line.strip()+char_str)
 			else:
 				lineLst = line.strip().split(col_sep)
 				out_item = lineLst[n].strip()+char_str
 				lineLst[n] = out_item
-				print col_sep.join(lineLst)
+				print(col_sep.join(lineLst))
 	inp.close()
 
 def function_maxVal(input_file,flt_val,n,col_sep,comment_char):
@@ -475,12 +475,12 @@ def function_maxVal(input_file,flt_val,n,col_sep,comment_char):
 	inp = open(input_file)
 	for line in inp:
 		if line.startswith(comment_char):
-			print line.strip()
+			print(line.strip())
 		else:
 			lineLst = line.strip().split(col_sep)
 			line_val = float(lineLst[ind])
 			if line_val <= flt_val:
-				print line.strip()
+				print(line.strip())
 	inp.close()
 
 def function_minVal(input_file,flt_val,n,col_sep,comment_char):
@@ -491,12 +491,12 @@ def function_minVal(input_file,flt_val,n,col_sep,comment_char):
 	inp = open(input_file)
 	for line in inp:
 		if line.startswith(comment_char):
-			print line.strip()
+			print(line.strip())
 		else:
 			lineLst = line.strip().split(col_sep)
 			line_val = float(lineLst[ind])
 			if line_val >= flt_val:
-				print line.strip()
+				print(line.strip())
 	inp.close()
 
 ### SET DEFAULTS
@@ -542,12 +542,12 @@ for arg in sys.argv:
 
 if function == None or input_file == None:
 	print_help()
-	print "Function (-f) and input file (-i) required!"
+	print("Function (-f) and input file (-i) required!")
 	sys.exit()
 elif function == "random":
 	if n == None:
 		print_help()
-		print "Integer (-n) required!"
+		print("Integer (-n) required!")
 		sys.exit()
 	else:
 		function_random(input_file,comment_char,n)
@@ -558,7 +558,7 @@ elif function == "reverse":
 elif function == "keep_line":
 	if char_str == None and input_list == None:
 		print_help()
-		print "Character string (-str) required!"
+		print("Character string (-str) required!")
 		sys.exit()
 	else:
 		# function_keep_line(input_file,comment_char,char_str,n,col_sep)
@@ -571,11 +571,11 @@ elif function == "keep_line":
 elif function == "rm_line":
 	if char_str == None and input_list == None:
 		print_help()
-		print "Character string (-str) or input list (-list) required!"
+		print("Character string (-str) or input list (-list) required!")
 		sys.exit()
 	else:
 		if char_str != None and input_list != None:
-			print "Input either string (-str) or list (-list), not both!"
+			print("Input either string (-str) or list (-list), not both!")
 			sys.exit()
 		elif char_str != None:
 			function_rm_line(input_file,comment_char,char_str,n,col_sep)
@@ -589,7 +589,7 @@ elif function == "clear_spaces":
 elif function == "get_column":
 	if n == None:
 		print_help()
-		print "Integer (-n) required!"
+		print("Integer (-n) required!")
 		sys.exit()
 	else:
 		function_get_col(input_file,comment_char,n,description,col_sep,row_ids)
@@ -597,7 +597,7 @@ elif function == "get_column":
 elif function == "rm_column":
 	if n == None:
 		print_help()
-		print "Integer (-n) required!"
+		print("Integer (-n) required!")
 		sys.exit()
 	else:
 		function_rm_col(input_file,n,col_sep)
@@ -605,7 +605,7 @@ elif function == "rm_column":
 elif function == "find_replace":
 	if char_str == None or replace_str == None:
 		print_help()
-		print "Find string (-str) and replace string (-rpl) required!"
+		print("Find string (-str) and replace string (-rpl) required!")
 		sys.exit()
 	else:
 		function_find_replace(input_file,col_sep,char_str,replace_str)
@@ -616,7 +616,7 @@ elif function == "rm_dup":
 elif function == "split_line":
 	if char_str == None:
 		print_help()
-		print "Spliting string (-str) required!"
+		print("Spliting string (-str) required!")
 		sys.exit()
 	function_split_line(input_file,n,col_sep,char_str,comment_char)
 	sys.exit()
@@ -632,42 +632,42 @@ elif function == "rm_char":
 elif function == "col_elements":
 	if n == None:
 		print_help()
-		print "Column index (-n) required!"
+		print("Column index (-n) required!")
 	else:
 		function_colEle(input_file,n,col_sep,comment_char)
 	sys.exit()
 elif function == "count_elements":
 	if n == None:
 		print_help()
-		print "Column index (-n) required!"
+		print("Column index (-n) required!")
 	else:
 		function_cntEle(input_file,n,col_sep,comment_char)
 	sys.exit()
 elif function == "prefix":
 	if char_str == None:
 		print_help()
-		print "Character string (-str) required!"
+		print("Character string (-str) required!")
 	else:
 		function_prefix(input_file,n,char_str,col_sep,comment_char)
 elif function == "suffix":
 	if char_str == None:
 		print_help()
-		print "Character string (-str) required!"
+		print("Character string (-str) required!")
 	else:
 		function_suffix(input_file,n,char_str,col_sep,comment_char)
 elif function == "max_val":
 	if float_val == None:
 		print_help()
-		print "Float value (-flt) required!"
+		print("Float value (-flt) required!")
 	else:
 		function_maxVal(input_file,float_val,n,col_sep,comment_char)
 elif function == "min_val":
 	if float_val == None:
 		print_help()
-		print "Float value (-flt) required!"
+		print("Float value (-flt) required!")
 	else:
 		function_minVal(input_file,float_val,n,col_sep,comment_char)
 else:
 	print_help()
-	print "Function not recognized!"
+	print("Function not recognized!")
 	sys.exit()

@@ -4,7 +4,7 @@ import sys
 import OverlapFunctions as ov
 
 def print_help():
-	print'''
+	print('''
 inp1 = reference BED file
 inp2 = target BED file
 inp3 = (optional) string for output
@@ -17,7 +17,7 @@ Each entry from the reference BED file may have more than one overlapping region
   file. Each overlap will be output on its own line.
 Regions in the reference BED file that do not have an overlap in the target BED file
   will have three NAs appended.
-'''
+''')
 
 def main():
 	if len(sys.argv) == 1 or "-h" in sys.argv:
@@ -33,7 +33,7 @@ def main():
 			output_str = tar_bed_file.split("/")[-1]
 	except:
 		print_help()
-		print "Error reading arguments, quitting!"
+		print("Error reading arguments, quitting!")
 		sys.exit()
 	
 	arg_dict = {"Ref":[ref_bed_file,0,1,2], "Tar":[tar_bed_file,0,1,2], "Span": 10000, "LnOut": "%s.%s_overlap.lines"%(ref_bed_file,output_str), "NumOut": "%s.%s_overlap.num"%(ref_bed_file,output_str)}
